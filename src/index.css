@@ -1,5 +1,4 @@
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -35,4 +34,13 @@ p {
 
 .none {
   color: red;
+}
+
+input {
+  padding: 15px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px;
 }

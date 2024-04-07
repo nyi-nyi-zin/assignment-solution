@@ -1,42 +1,57 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
-  const [todos, setTodo] = useState([]);
-  useEffect((_) => {
-    fetchData();
-  }, []);
+  const [error, setError] = useState(false);
+  const [data, setData] = useState(null);
+  const [id, setId] = useState("");
 
-  const fetchData = async () => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/todos");
-    const data = await res.json();
-    console.log(data);
-    setTodo(data);
+  const getdata = async (e) => {
+    e.preventDefault();
+
+    if (id < 1) {
+      setError(true);
+      setId("");
+      return;
+    }
+
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/todos/${id}`
+    );
+    const data = await response.json();
+    setError(false);
+    setData(data);
+    setId("");
   };
 
   return (
     <section>
-      <table>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>completed</th>
-          </tr>
-        </thead>
-        <tbody>
-          {todos.map((todo) => (
-            <tr key={todo.id}>
-              <td>{todo.id}</td>
-              <td>{todo.title}</td>
-              <td>
-                {todo.completed ? <p>Done</p> : <p className="none">None</p>}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <form onSubmit={getdata}>
+        <input
+          type="number"
+          onChange={(e) => {
+            setId(e.target.value);
+          }}
+        ></input>
+        <button type="submit">Get Data</button>
+      </form>
+      <div>
+        {error && <p>Enter an invalid Id</p>}
+        {data && (
+          <div>
+            <h1>title - {data.title}</h1>
+            <h1>userId - {data.id}</h1>
+            <h1>
+              completed -{" "}
+              {data.completed ? (
+                <span>Completed</span>
+              ) : (
+                <span>not completed</span>
+              )}
+            </h1>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
-
 export default App;
